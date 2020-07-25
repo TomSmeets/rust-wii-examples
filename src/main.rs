@@ -82,6 +82,8 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
         let mut projection: Mtx = core::mem::zeroed();
 
         VIDEO_Init();
+
+        // TODO: add wpad support
         // WPAD_Init();
 
         screenMode = VIDEO_GetPreferredMode(NULL as _);
@@ -93,21 +95,6 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
         VIDEO_SetPostRetraceCallback(Some(copy_buffers));
         VIDEO_SetBlack(false);
         VIDEO_Flush();
-
-        if true {
-            CON_Init(
-                frameBuffer,
-                0,
-                0,
-                (*screenMode).fbWidth as i32,
-                (*screenMode).efbHeight as i32 / 2,
-                ((*screenMode).fbWidth * 2) as i32,
-            );
-
-            println!("v {:?}", (&mut vertices.value).as_mut_ptr());
-            println!("c {:?}", (&mut colors.value).as_mut_ptr());
-            //fail();
-        }
 
         let fifoBuffer = mem_cached_to_uncached!(memalign(32, FIFO_SIZE));
         memset(fifoBuffer, 0, FIFO_SIZE);
@@ -196,6 +183,7 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
             GX_InvalidateTexAll();
             update_screen(view);
 
+            // TODO: WPAD support
             // WPAD_ScanPads();
             // if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME) { return 0; }
         }
@@ -205,6 +193,7 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
 unsafe fn update_screen(mut viewMatrix: Mtx) {
     let mut modelView: Mtx = core::mem::zeroed();
 
+    // TODO: use faster ps_gu* matrix operations
     c_guMtxIdentity(modelView.as_mut_ptr());
     c_guMtxTransApply(
         modelView.as_mut_ptr(),
