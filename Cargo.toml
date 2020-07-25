@@ -1,0 +1,21 @@
+[package]
+name = "rust-wii"
+version = "0.1.0"
+authors = ["rust-wii"]
+edition = "2018"
+build = "build.rs"
+
+[[bin]]
+name = "rust-wii"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies.ogc-rs]
+git = "https://github.com/rust-wii/ogc-rs.git"
+
+[dependencies.ogc-sys]
+git = "https://github.com/rust-wii/ogc-rs.git"
