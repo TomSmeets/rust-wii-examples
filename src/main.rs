@@ -7,6 +7,7 @@ use ogc::prelude::*;
 use ogc_sys::*;
 
 mod util;
+mod math;
 use util::*;
 
 static mut screenMode: *mut GXRModeObj = core::ptr::null_mut();
@@ -191,26 +192,14 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
 }
 
 unsafe fn update_screen(mut viewMatrix: Mtx) {
-    let mut modelView: Mtx = core::mem::zeroed();
+    let viewMatrix = math::Mtx::from(viewMatrix);
+    let modelView = math::Mtx::identity().transform(0.0, 0.0, -50.0);
+    let mut modelView = viewMatrix.concat(modelView);
 
-    // TODO: use faster ps_gu* matrix operations
-    c_guMtxIdentity(modelView.as_mut_ptr());
-    c_guMtxTransApply(
-        modelView.as_mut_ptr(),
-        modelView.as_mut_ptr(),
-        0.0,
-        0.0,
-        -50.0,
-    );
-    c_guMtxConcat(
-        viewMatrix.as_mut_ptr(),
-        modelView.as_mut_ptr(),
-        modelView.as_mut_ptr(),
-    );
-
-    GX_LoadPosMtxImm(modelView.as_mut_ptr(), GX_PNMTX0);
+    GX_LoadPosMtxImm(modelView.inner_mut(), GX_PNMTX0);
     GX_Begin(GX_TRIANGLES as u8, GX_VTXFMT0 as u8, 3);
 
+    // NOTE: Order matters!
     GX_Position1x8(0);
     GX_Color1x8(0);
     GX_Position1x8(1);
