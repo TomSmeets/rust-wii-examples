@@ -191,7 +191,7 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
     }
 }
 
-unsafe fn update_screen(mut viewMatrix: Mtx) {
+unsafe fn update_screen(viewMatrix: Mtx) {
     let viewMatrix = math::Mtx::from(viewMatrix);
     let mut modelView = math::Mtx::identity().transform(0.0, 0.0, -50.0);
     if (WPAD_ButtonsDown(0) & WPAD_BUTTON_A) != 0 {
