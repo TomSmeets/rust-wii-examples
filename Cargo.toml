@@ -15,4 +15,7 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
+mllib-sys = { git = "https://github.com/rust-wii/mllib-sys.git" }
 ogc-sys = { git = "https://github.com/rust-wii/ogc-rs.git" }
+ogc-rs  = { git = "https://github.com/rust-wii/ogc-rs.git" }
+# libc = { git = "https://github.com/rust-wii/libc.git" }

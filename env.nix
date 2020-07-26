@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }: let
-  devkit = import (builtins.fetchurl https://gist.githubusercontent.com/TomSmeets/e306c414216def4fc8c12d0914717a7c/raw/e99f59fcd3f0ad4a54e123d80b9a8a1b38ea152a/devkitppc.nix) { inherit pkgs; };
-
+  devkit = import (builtins.fetchurl https://gist.githubusercontent.com/TomSmeets/e306c414216def4fc8c12d0914717a7c/raw/7374086ad6d50318010157a1424c4d4d3ed42ad5/devkitppc.nix) { inherit pkgs; };
+  # devkit = import ../default.nix { inherit pkgs; };
 in pkgs.writeShellScript "build.sh" ''
     export DEVKITPRO="${devkit}"
     export PATH="$DEVKITPRO/devkitPPC/bin:$DEVKITPRO/tools/bin:$PATH"
