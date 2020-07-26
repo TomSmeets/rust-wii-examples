@@ -2,12 +2,10 @@
 #![feature(start)]
 
 extern crate alloc;
-use mllib_sys::*;
+use ogc_sys::*;
 use ogc::mem_cached_to_uncached;
 
 mod math;
-mod util;
-use util::*;
 
 static mut screenMode: *mut GXRModeObj = core::ptr::null_mut();
 static mut frameBuffer: *mut core::ffi::c_void = core::ptr::null_mut();
@@ -84,7 +82,7 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
         VIDEO_Init();
 
         // TODO: add wpad support
-        WPAD_Init();
+        // WPAD_Init();
 
         screenMode = VIDEO_GetPreferredMode(NULL as _);
 
@@ -96,7 +94,7 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
         VIDEO_SetBlack(false);
         VIDEO_Flush();
 
-        let fifoBuffer = mem_cached_to_uncached!(memalign(32, FIFO_SIZE as usize));
+        let fifoBuffer = mem_cached_to_uncached!(memalign(32, FIFO_SIZE));
         memset(fifoBuffer, 0, FIFO_SIZE);
 
         GX_Init(fifoBuffer, FIFO_SIZE);
@@ -183,20 +181,16 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
             GX_InvalidateTexAll();
             update_screen(view);
 
-            WPAD_ScanPads();
-            if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME) != 0 {
-                return 0;
-            }
+            // TODO: WPAD support
+            // WPAD_ScanPads();
+            // if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME) != 0 { return 0; }
         }
     }
 }
 
 unsafe fn update_screen(viewMatrix: Mtx) {
     let viewMatrix = math::Mtx::from(viewMatrix);
-    let mut modelView = math::Mtx::identity().transform(0.0, 0.0, -50.0);
-    if (WPAD_ButtonsDown(0) & WPAD_BUTTON_A) != 0 {
-        modelView = modelView.transform(0.0, 10.0, 0.0);
-    }
+    let modelView = math::Mtx::identity().transform(0.0, 0.0, -50.0);
     let mut modelView = viewMatrix.concat(modelView);
 
     GX_LoadPosMtxImm(modelView.inner_mut(), GX_PNMTX0);

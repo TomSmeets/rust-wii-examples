@@ -26,14 +26,6 @@ version = "0.2.61"
 source = "git+https://github.com/rust-wii/libc.git?branch=wii#9eeda009186d9f8fe70a7031e471b34f8c3734e8"
 
 [[package]]
-name = "mllib-sys"
-version = "0.1.0"
-source = "git+https://github.com/rust-wii/mllib-sys.git#b7cf0189b62377dcd0abe60e7637e31fd1777b9d"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "num-traits"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -64,7 +56,6 @@ dependencies = [
 name = "rust-wii"
 version = "0.1.0"
 dependencies = [
- "mllib-sys",
  "ogc-rs",
  "ogc-sys",
 ]
