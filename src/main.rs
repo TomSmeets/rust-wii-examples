@@ -4,7 +4,6 @@
 extern crate alloc;
 use mllib_sys::*;
 use ogc::mem_cached_to_uncached;
-use ogc::prelude::*;
 
 mod math;
 mod util;
